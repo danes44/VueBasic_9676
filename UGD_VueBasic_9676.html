@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tebak Angka</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app" class="container">
+        <div class="card shadow my-5 mx-auto" style="width: fit-content;">
+            <div class="card-header p-5 text-center"><b>Tebak angka </b></div>
+            <div class="card-body p-5 text-center">
+                <input type="number" class="form-control" v-model="inputAngka" :disabled="disabled" placeholder="Tebak Angkanya"/>
+                <br>
+                <button class="btn btn-outline-primary mb-5" @click="tebakAngka" :disabled="disabled">Tebak</button>
+                <br>
+                Kesempatan : {{ kesempatan }}
+            </div>
+        </div>
+        <div class="text-center" v-if="status==1">
+            <p class="text-success">Yeay Benar </p> 
+            <button class="btn btn-primary" @click="mainUlang" >Main Ulang</button>
+        </div>
+
+        <div class="text-center" v-if="status==2">
+            <p>Coba lagi dong masi salah!</p> 
+            <button class="btn btn-warning" @click="cobalagi" >Coba Lagi</button>
+        </div>
+
+        <div class="text-center" v-if="status==0">
+            <p class="text-danger">Yah Kalah :"</p> 
+            <button class="btn btn-primary" @click="mainUlang" >Main Ulang</button>
+        </div>
+
+        <div style="display: none;"> {{ randomAngka }} </div>
+
+        <footer class="text-center mt-5">
+            {{mhs.nama}} | {{mhs.npm}} | {{mhs.kelas}}
+        </footer>
+    </div>
+</body>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            randomAngka: Math.floor(Math.random() * (10 - 1 + 1)) + 1,
+            inputAngka:0,
+            kesempatan:3,
+            status:undefined,
+            disabled:false,
+            mhs: {
+                nama:'Frumentius Daneswara',
+                npm: '180709676',
+                kelas: 'D',
+            },
+        },
+        methods: {
+            tebakAngka(){
+                if(this.inputAngka == this.randomAngka){
+                    this.status = 1;
+                }else {
+                        this.status = 2;
+                        this.disabled = true;
+                        this.kesempatan--;
+                        if(this.kesempatan==0){
+                            this.status=0;
+                        }
+                }              
+           },
+           cobalagi(){
+                this.disabled = false;
+                this.status = undefined;
+           },
+           mainUlang(){
+               location.reload();
+           }
+        },
+    })
+</script>
+
+</html>
