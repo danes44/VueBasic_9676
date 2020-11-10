@@ -54,12 +54,12 @@
                         <h3><b>Penting</b></h3>
                     </div>
                     <div class="card-body px-5">
-                        <todo-item v-for="(todo, index) in todosPenting" :key="index"
+                        <todo-item-penting v-for="(todo, index) in todosPenting" :key="index"
                             v-bind:title="todo.title"
                             v-bind:note="todo.note"
                             v-bind:prioritas="todo.prioritas"
-                            v-on:hapusList="hapusList(index)">
-                        </todo-item>
+                            v-on:hapuspenting="hapuspenting(index)">
+                        </todo-item-penting>
                     </div>
                 </div>
             </div>
@@ -69,12 +69,12 @@
                         <h3><b>Biasa Aja</b></h3>
                     </div>
                     <div class="card-body px-5">
-                        <todo-item v-for="(todo, index) in todosBiasa" :key="index"
+                        <todo-item-biasa v-for="(todo, index) in todosBiasa" :key="index"
                             v-bind:title="todo.title"
                             v-bind:note="todo.note"
                             v-bind:prioritas="todo.prioritas"
-                            v-on:hapusList="hapusList(index)">
-                        </todo-item>
+                            v-on:hapusbiasa="hapusbiasa(index)">
+                        </todo-item-biasa>
                     </div>
                 </div>
             </div>
@@ -84,12 +84,12 @@
                         <h3><b>Gak Penting</b></h3>
                     </div>
                     <div class="card-body px-5">
-                        <todo-item v-for="(todo, index) in todosGakPenting" :key="index"
+                        <todo-item-gak-penting v-for="(todo, index) in todosGakPenting" :key="index"
                             v-bind:title="todo.title"
                             v-bind:note="todo.note"
                             v-bind:prioritas="todo.prioritas"
-                            v-on:hapus="hapus(index)">
-                        </todo-item>
+                            v-on:hapusgakpenting="hapusgakpenting(index)">
+                        </todo-item-gak-penting>
                     </div>
                 </div>
             </div>
@@ -103,11 +103,37 @@
 </body>
 
 <script>
-    Vue.component('todo-item', {
+    Vue.component('todo-item-penting', {
         props: ['title', 'prioritas', 'note'],
         template: `<div class="card shadow mb-4">
                         <div class="card-body px-3 pt-3 ">
-                            <button class="close" @click="$emit('hapus')" aria-label="Close">
+                            <button class="close" @click="$emit('hapuspenting')">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5><b>{{this.title}}</b></h5>
+                            <p>{{this.note}}</p>
+                        </div>
+                    </div>`,
+    })
+
+    Vue.component('todo-item-biasa', {
+        props: ['title', 'prioritas', 'note'],
+        template: `<div class="card shadow mb-4">
+                        <div class="card-body px-3 pt-3 ">
+                            <button class="close" @click="$emit('hapusbiasa')">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5><b>{{this.title}}</b></h5>
+                            <p>{{this.note}}</p>
+                        </div>
+                    </div>`,
+    })
+
+    Vue.component('todo-item-gak-penting', {
+        props: ['title', 'prioritas', 'note'],
+        template: `<div class="card shadow mb-4">
+                        <div class="card-body px-3 pt-3 ">
+                            <button class="close" @click="$emit('hapusgakpenting')">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <h5><b>{{this.title}}</b></h5>
@@ -189,16 +215,14 @@
                 this.selected=''
                 this.message=''
             },
-            hapus(index){
-                if(this.selected == "penting"){
-                    this.todosPenting.splice(index, 1)
-                }
-                else if(this.selected == "biasa"){
-                    this.todosBiasa.splice(index, 1)
-                }
-                else if(this.selected == "gakPenting"){
-                    this.todosGakPenting.splice(index, 1)
-                }
+            hapuspenting(index){
+                this.todosPenting.splice(index, 1)
+            },
+            hapusbiasa(index){
+                this.todosBiasa.splice(index, 1)
+            },
+            hapusgakpenting(index){
+                this.todosGakPenting.splice(index, 1)
             },
         },
     })
